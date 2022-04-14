@@ -1,0 +1,1 @@
+void CheckInput(Player& player);
