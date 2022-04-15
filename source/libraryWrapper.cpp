@@ -15,6 +15,9 @@ void CloseWindow(){
 void SetTargetFPS(int fps){
     Raylib::SetTargetFPS(fps);
 }
+float GetFrameTime(){
+    return Raylib::GetFrameTime();
+}
 bool WindowShouldClose(){
     return Raylib::WindowShouldClose();
 }
@@ -32,6 +35,18 @@ void DrawFPS(int posX, int posY){
 }
 void DrawText(const std::string& text, int posX, int posY, int fontSize, const Color& c){
     Raylib::DrawText(text.c_str(), posX, posY, fontSize, (Raylib::Color){c.r, c.g, c.b, c.a});
+}
+void DrawRectangle(int posX, int posY, int width, int height, const Color& c){
+    Raylib::DrawRectangle(posX, posY, width, height, (Raylib::Color){c.r, c.g, c.b, c.a});
+}
+void DrawRectangleLines(int posX, int posY, int width, int height, const Color& c){
+    Raylib::DrawRectangleLines(posX, posY, width, height, (Raylib::Color){c.r, c.g, c.b, c.a});
+}
+void DrawRectangleGradientV(int posX, int posY, int width, int height, const Color& c1, const Color& c2){
+    Raylib::DrawRectangleGradientV(posX, posY, width, height, (Raylib::Color){c1.r, c1.g, c1.b, c1.a}, (Raylib::Color){c2.r, c2.g, c2.b, c2.a});
+}
+void DrawRectangleGradientH(int posX, int posY, int width, int height, const Color& c1, const Color& c2){
+    Raylib::DrawRectangleGradientH(posX, posY, width, height, (Raylib::Color){c1.r, c1.g, c1.b, c1.a}, (Raylib::Color){c2.r, c2.g, c2.b, c2.a});
 }
 void DrawSquare(int posX, int posY, int width, const Color& c){
     Raylib::DrawRectangle(posX, posY, width, width, (Raylib::Color){c.r, c.g, c.b, c.a});

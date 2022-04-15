@@ -48,23 +48,29 @@ bool ButtonHeld(Direction dir){
 
 void CheckInput(Player& player){
     if(ButtonHeld(Direction::Left)){
-        player.direction -= 0.08f;
+        player.direction -= 4.0f * GetFrameTime();
     }
     else if(ButtonHeld(Direction::Right)){
-        player.direction += 0.08f;
+        player.direction += 4.0f * GetFrameTime();
     }
-    else if(ButtonHeld(Direction::Up)){
+    if(ButtonHeld(Direction::Up)){
         if(player.rechargingFuel > 0){
-            player.velocity.x += cos(player.direction) * 0.05;
-            player.velocity.y += sin(player.direction) * 0.05;
-            player.rechargingFuel--;
+            player.velocity.x += cos(player.direction) * 50.0f * GetFrameTime();
+            player.velocity.y += sin(player.direction) * 50.0f * GetFrameTime();
+            player.rechargingFuel -= 8000 * GetFrameTime();
         }
     }
     else if(ButtonHeld(Direction::Down)){
         if(player.rechargingFuel > 0){
-            player.velocity.x -= cos(player.direction) * 0.05;
-            player.velocity.y -= sin(player.direction) * 0.05;
-            player.rechargingFuel--;
+            player.velocity.x -= cos(player.direction) * 50.0f * GetFrameTime();
+            player.velocity.y -= sin(player.direction) * 50.0f * GetFrameTime();
+            player.rechargingFuel -= 8000 * GetFrameTime();
         }
+    }
+    if(IsKeyPressed(KEY_KP_ADD) || IsKeyPressed(KEY_EQUAL)){
+        player.orbitDrawSteps += 100;
+    }
+    else if(IsKeyPressed(KEY_KP_SUBTRACT) || IsKeyPressed(KEY_MINUS)){
+        player.orbitDrawSteps -= 100;
     }
 }

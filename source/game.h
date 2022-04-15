@@ -31,5 +31,6 @@ public:
     float direction;
     int iceFuel;
     int rechargingFuel;
+    int orbitDrawSteps;
     Player();
 };

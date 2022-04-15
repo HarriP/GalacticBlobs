@@ -12,6 +12,11 @@ public:
 void InitWindow(int resolutionX, int resolutionY, const char* windowTitle);
 void CloseWindow();
 bool WindowShouldClose();
+float GetFrameTime();
+void DrawRectangle(int posX, int posY, int width, int height, const Color& c);
+void DrawRectangleLines(int posX, int posY, int width, int height, const Color& c);
+void DrawRectangleGradientV(int posX, int posY, int width, int height, const Color& c1, const Color& c2);
+void DrawRectangleGradientH(int posX, int posY, int width, int height, const Color& c1, const Color& c2);
 void DrawSquare(int posX, int posY, int width, const Color& c);
 void DrawCircle(int centerX, int centerY, float radius, const Color& c);
 void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, const Color& c);

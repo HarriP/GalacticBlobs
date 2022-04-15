@@ -69,11 +69,11 @@ Vec2& Vec2::Normalize(){
 Blob::Blob() : position(0, 0), velocity(0, 0), size(0) {}
 Blob::Blob(float posX, float posY, float velX, float velY, int aSize) : position(posX, posY), velocity(velX, velY), size(aSize) {}
 
-Player::Player() : direction(0.0f), iceFuel(0), rechargingFuel(10000) {}
+Player::Player() : direction(0.0f), iceFuel(0), rechargingFuel(2000), orbitDrawSteps(800) {}
 
 void Simulate(Blob& blob, float gravity){
-    blob.position += blob.velocity;
-    blob.velocity += (Vec2(resolutionX/2, resolutionY/2) - blob.position).Normalize() * gravity;
+    blob.position += blob.velocity * GetFrameTime();
+    blob.velocity += (Vec2(resolutionX/2, resolutionY/2) - blob.position).Normalize() * gravity * GetFrameTime();
 }
 
 void DrawOrbit(Blob blob, float gravity, int steps){
@@ -86,7 +86,8 @@ void DrawOrbit(Blob blob, float gravity, int steps){
 void Game(){
     bool menu = false;
     bool quit = false;
-    float gravity = 0.098f;
+    float gravity = 200.0f;
+    int rechargingFuelMax = 100000;
     Player player;
     player.size = 20.0f;
     player.position.x = 250;
@@ -96,7 +97,7 @@ void Game(){
         ClearBackground(Color(0, 0, 0, 255));
         DrawFPS(10, 1);
         Simulate(player, gravity);
-        DrawOrbit(player, gravity, 800);
+        DrawOrbit(player, gravity, player.orbitDrawSteps);
         DrawCircle(player.position.x, player.position.y, player.size, {80, 80, 80, 255});
         DrawLine(player.position.x, player.position.y, player.position.x+cos(player.direction)*player.size, player.position.y+sin(player.direction)*player.size, {255, 0, 0, 255});
         CheckInput(player);
@@ -106,7 +107,17 @@ void Game(){
         else if(player.direction < -pi * 2){
             player.direction += pi * 2;
         }
-        DrawText(std::to_string(player.direction).c_str(), 100, 1, 20, {0, 255, 0, 255});
+        player.rechargingFuel += 1000 * GetFrameTime();
+        if(player.rechargingFuel > rechargingFuelMax){
+            player.rechargingFuel = rechargingFuelMax;
+        }
+        else if(player.rechargingFuel < 0){
+            player.rechargingFuel = 0;
+        }
+        DrawRectangleGradientH(100, 1, 100*(player.rechargingFuel/(float)rechargingFuelMax), 10, {255, 0, 0, 255}, {(unsigned char)(255*(1-(player.rechargingFuel/(float)rechargingFuelMax))), (unsigned char)(255*(player.rechargingFuel/(float)rechargingFuelMax)), 0, 255});
+        DrawRectangleLines(100, 1, 100, 10, {0, 255, 0, 255});
+        // DrawText(std::to_string(player.rechargingFuel).c_str(), 300, 1, 20, {0, 255, 0, 255});
+        // DrawText(std::to_string(player.orbitDrawSteps).c_str(), 700, 1, 20, {0, 255, 0, 255});
         if(menu){
             // Draw main menu
             DrawText("Main menu", resolutionX/2-100, 10, 40, {0, 255, 0, 255});
