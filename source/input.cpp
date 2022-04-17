@@ -47,6 +47,8 @@ bool ButtonHeld(Direction dir){
 }
 
 void CheckInput(Player& player){
+    static int buttonTimeout = 0;
+    buttonTimeout--;
     if(ButtonHeld(Direction::Left)){
         player.direction -= 4.0f * GetFrameTime();
     }
@@ -67,10 +69,15 @@ void CheckInput(Player& player){
             player.rechargingFuel -= 8000 * GetFrameTime();
         }
     }
-    if(IsKeyPressed(KEY_KP_ADD) || IsKeyPressed(KEY_EQUAL)){
+    if((IsKeyDown(KEY_KP_ADD) || IsKeyDown(KEY_EQUAL)) && buttonTimeout <= 0){
         player.orbitDrawSteps += 100;
+        buttonTimeout = 10;
     }
-    else if(IsKeyPressed(KEY_KP_SUBTRACT) || IsKeyPressed(KEY_MINUS)){
+    else if((IsKeyDown(KEY_KP_SUBTRACT) || IsKeyDown(KEY_MINUS)) && buttonTimeout <= 0){
         player.orbitDrawSteps -= 100;
+        buttonTimeout = 10;
+    }
+    else if(IsKeyUp(KEY_KP_ADD) && IsKeyUp(KEY_EQUAL) && IsKeyUp(KEY_KP_SUBTRACT) && IsKeyUp(KEY_MINUS)){
+        buttonTimeout = 0;
     }
 }

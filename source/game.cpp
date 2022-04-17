@@ -1,8 +1,9 @@
-#include <sstream>
 #include <string>
 #include <vector>
 #include <queue>
+#include <random>
 #include <cmath>
+#include <ctime>
 #include "libraryWrapper.h"
 #include "game.h"
 #include "input.h"
@@ -69,7 +70,7 @@ Vec2& Vec2::Normalize(){
 Blob::Blob() : position(0, 0), velocity(0, 0), size(0) {}
 Blob::Blob(float posX, float posY, float velX, float velY, int aSize) : position(posX, posY), velocity(velX, velY), size(aSize) {}
 
-Player::Player() : direction(0.0f), iceFuel(0), rechargingFuel(2000), orbitDrawSteps(800) {}
+Player::Player() : direction(0.0f), iceFuel(0), rechargingFuel(100000), orbitDrawSteps(800) {}
 
 void Simulate(Blob& blob, float gravity){
     blob.position += blob.velocity * GetFrameTime();
@@ -83,23 +84,44 @@ void DrawOrbit(Blob blob, float gravity, int steps){
     }
 }
 
+void CheckCollision(Blob& a, Blob& b){
+    if(a.size > b.size){
+        if(a.position.WithinRange(b.position, a.size+b.size)){
+            a.size += b.size;
+            b.size = 0;
+        }
+    }
+}
+
 void Game(){
+    std::mt19937_64 rndGen(time(NULL));
+    std::uniform_int_distribution<int> rnd(30, 90);
     bool menu = false;
     bool quit = false;
     float gravity = 200.0f;
     int rechargingFuelMax = 100000;
     Player player;
-    player.size = 20.0f;
-    player.position.x = 250;
-    player.position.y = 250;
+    player.size = 20;
+    player.position.x = resolutionX/4;
+    player.position.y = resolutionY/2;
+    player.velocity.x = 0;
+    player.velocity.y = 300.0f;
+    std::vector<Blob> blobs;
+    blobs.emplace_back(resolutionX/2, resolutionY/2, 0, 0, 50);
+    blobs.emplace_back(resolutionX/2, resolutionY/4, -300.0f, 0, 10);
     while(true){
         BeginDrawing();
         ClearBackground(Color(0, 0, 0, 255));
         DrawFPS(10, 1);
         Simulate(player, gravity);
+        Simulate(blobs[1], gravity);
         DrawOrbit(player, gravity, player.orbitDrawSteps);
         DrawCircle(player.position.x, player.position.y, player.size, {80, 80, 80, 255});
         DrawLine(player.position.x, player.position.y, player.position.x+cos(player.direction)*player.size, player.position.y+sin(player.direction)*player.size, {255, 0, 0, 255});
+        DrawCircle(blobs[0].position.x, blobs[0].position.y, blobs[0].size, {255, 255, 0, 255});
+        DrawCircle(blobs[1].position.x, blobs[1].position.y, blobs[1].size, {80, 80, 80, 255});
+        CheckCollision(blobs[0], player);
+        CheckCollision(player, blobs[1]);
         CheckInput(player);
         if(player.direction > pi * 2){
             player.direction -= pi * 2;

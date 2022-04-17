@@ -31,10 +31,10 @@ int main(int argc, char** argv){
             targetFps = atoi(argv[i+1]);
         }
         else if(strcmp(argv[i], "-keys") == 0 && argc > i+4){
-            keyUp = argv[i+1][0];
-            keyLeft = argv[i+2][0];
-            keyDown = argv[i+3][0];
-            keyRight = argv[i+4][0];
+            keyUp = toupper(argv[i+1][0]);
+            keyLeft = toupper(argv[i+2][0]);
+            keyDown = toupper(argv[i+3][0]);
+            keyRight = toupper(argv[i+4][0]);
         }
         else if(strcmp(argv[i], "-keysNumeric") == 0 && argc > i+4){
             keyUp = argv[i+1][0];
