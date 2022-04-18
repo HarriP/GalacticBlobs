@@ -5,7 +5,9 @@ public:
     float x;
     float y;
     Vec2();
+    Vec2(const Vec2& b);
     Vec2(float aX, float aY);
+    Vec2& operator=(const Vec2& b);
     Vec2 operator+(const Vec2& b) const;
     Vec2& operator+=(const Vec2& b);
     Vec2 operator-(const Vec2& b) const;

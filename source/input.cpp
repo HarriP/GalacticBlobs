@@ -9,6 +9,7 @@ extern int keyUp;
 extern int keyLeft;
 extern int keyDown;
 extern int keyRight;
+extern bool cameraMode;
 
 enum class Direction{
     None,
@@ -79,5 +80,8 @@ void CheckInput(Player& player){
     }
     else if(IsKeyUp(KEY_KP_ADD) && IsKeyUp(KEY_EQUAL) && IsKeyUp(KEY_KP_SUBTRACT) && IsKeyUp(KEY_MINUS)){
         buttonTimeout = 0;
+    }
+    if(IsKeyPressed('N')){
+        cameraMode = !cameraMode;
     }
 }
