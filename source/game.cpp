@@ -88,7 +88,7 @@ void DrawOrbit(Blob blob, const Vec2& cameraPos, float gravity, int steps){
     for(int i=0; i<steps; i++){
         Simulate(blob, gravity);
         if(cameraMode){
-            DrawPixel(resolutionX/2+(cameraPos.x-blob.position.x), resolutionY/2+(cameraPos.y-blob.position.y), {255, 0, 0, 255});
+            DrawPixel(resolutionX/2+(blob.position.x-cameraPos.x), resolutionY/2+(blob.position.y-cameraPos.y), {255, 0, 0, 255});
         }
         else{
             DrawPixel(blob.position.x, blob.position.y, {255, 0, 0, 255});
@@ -132,7 +132,7 @@ void Game(){
         Simulate(player, gravity);
         cameraPos = player.position + viewOffset;
         if(cameraMode){
-            DrawCircle(resolutionX/2+(cameraPos.x-star.position.x), resolutionY/2+(cameraPos.y-star.position.y), star.size, {255, 255, 0, 255});
+            DrawCircle(resolutionX/2+(star.position.x-cameraPos.x), resolutionY/2+(star.position.y-cameraPos.y), star.size, {255, 255, 0, 255});
         }
         else{
             DrawCircle(star.position.x, star.position.y, star.size, {255, 255, 0, 255});
@@ -143,7 +143,7 @@ void Game(){
             CheckCollision(blob, player);
             if(blob.size > player.size){
                 if(cameraMode){
-                    DrawCircle(resolutionX/2+(cameraPos.x-blob.position.x), resolutionY/2+(cameraPos.y-blob.position.y), blob.size, {150, 80, 80, 255});
+                    DrawCircle(resolutionX/2+(blob.position.x-cameraPos.x), resolutionY/2+(blob.position.y-cameraPos.y), blob.size, {150, 80, 80, 255});
                 }
                 else{
                     DrawCircle(blob.position.x, blob.position.y, blob.size, {150, 80, 80, 255});
@@ -151,7 +151,7 @@ void Game(){
             }
             else{
                 if(cameraMode){
-                    DrawCircle(resolutionX/2+(cameraPos.x-blob.position.x), resolutionY/2+(cameraPos.y-blob.position.y), blob.size, {80, 80, 80, 255});
+                    DrawCircle(resolutionX/2+(blob.position.x-cameraPos.x), resolutionY/2+(blob.position.y-cameraPos.y), blob.size, {80, 80, 80, 255});
                 }
                 else{
                     DrawCircle(blob.position.x, blob.position.y, blob.size, {80, 80, 80, 255});
@@ -167,13 +167,13 @@ void Game(){
         }
         DrawOrbit(player, cameraPos, gravity, player.orbitDrawSteps);
         if(cameraMode){
-            DrawCircle(resolutionX/2+(cameraPos.x-player.position.x), resolutionY/2+(cameraPos.y-player.position.y), player.size, {80, 80, 80, 255});
+            DrawCircle(resolutionX/2+(player.position.x-cameraPos.x), resolutionY/2+(player.position.y-cameraPos.y), player.size, {80, 80, 80, 255});
         }
         else{
             DrawCircle(player.position.x, player.position.y, player.size, {80, 80, 80, 255});
         }
         if(cameraMode){
-            DrawLine(resolutionX/2+(cameraPos.x-player.position.x), resolutionY/2+(cameraPos.y-player.position.y), resolutionX/2+(cameraPos.x-player.position.x)+cos(player.direction)*player.size, resolutionY/2+(cameraPos.y-player.position.y)+sin(player.direction)*player.size, {255, 0, 0, 255});
+            DrawLine(resolutionX/2+(player.position.x-cameraPos.x), resolutionY/2+(player.position.y-cameraPos.y), resolutionX/2+(player.position.x-cameraPos.x)+cos(player.direction)*player.size, resolutionY/2+(player.position.y-cameraPos.y)+sin(player.direction)*player.size, {255, 0, 0, 255});
         }
         else{
             DrawLine(player.position.x, player.position.y, player.position.x+cos(player.direction)*player.size, player.position.y+sin(player.direction)*player.size, {255, 0, 0, 255});
